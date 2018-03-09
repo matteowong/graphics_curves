@@ -29,7 +29,7 @@ void add_circle( struct matrix * points,
     t+=step;
     x1=r*cos(t*2*M_PI)+cx;
     y1=r*sin(t*2*M_PI)+cy;
-    add_edge(x0,y0,x1,y1);
+    add_edge(points,x0,y1,0,x1,y1,0);
     x0=x1;
     y0=y1;
   }
@@ -58,8 +58,29 @@ void add_curve( struct matrix *points,
                 double x0, double y0, 
                 double x1, double y1, 
                 double x2, double y2, 
-                double x3, double y3, 
+                double x3, double y3, //if hermite, x2, x3, y2, y3 are rates of change
                 double step, int type ) {
+
+  struct matrix *  x_coef=generate_curve_coefs(x0,x1,x2,x3,type);
+  struct matrix *  y_coef=generate_curve_coefs(y0,y1,y2,y3,type);
+  
+  int t=0;
+  step*=1000;
+  //set cx0, cy0
+  int cx0,cy0,cx1,cy1;//curve-x, curve-y
+
+  cx0=x0;
+  cy0=y0;
+  
+  while (t<=1000) {
+    t+=step;
+    cx1=(x_coef->m[0][0])*pow(t,3)+(x_coef->m[1][0])*pow(t,2)+(x_coef->m[2][0])*t+x_coef->m[3][0];
+    cy1=(y_coef->m[0][0])*pow(t,3)+(y_coef->m[1][0])*pow(t,2)+(y_coef->m[2][0])*t+y_coef->m[3][0];
+    add_edge(points,cx0,cy0,0,cx1,cy1,0);
+    cx0=cx1;
+    cy0=cy1;
+  }    
+  
 }
 
 
