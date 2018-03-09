@@ -23,13 +23,16 @@ void add_circle( struct matrix * points,
   double x0,y0,x1,y1,t;
   t=0;
   step*=1000;
-  x0=r*cos(t*2*M_PI)+cx;
-  y0=r*sin(t*2*M_PI)+cy;
+  x0=r*cos(t/1000*2*M_PI)+cx;
+  y0=r*sin(t/1000*2*M_PI)+cy;
   while (t<=1000) {
     t+=step;
-    x1=r*cos(t*2*M_PI)+cx;
-    y1=r*sin(t*2*M_PI)+cy;
-    add_edge(points,x0,y1,0,x1,y1,0);
+    x1=r*cos(t/1000*2*M_PI)+cx;
+    y1=r*sin(t/1000*2*M_PI)+cy;
+
+    printf("circle: x0: %lf y0: %lf x1: %lf y1: %lf\n",x0,y0,x1,y1);
+
+    add_edge(points,x0,y0,0,x1,y1,0);
     x0=x1;
     y0=y1;
   }
@@ -62,25 +65,32 @@ void add_curve( struct matrix *points,
                 double step, int type ) {
 
   struct matrix *  x_coef=generate_curve_coefs(x0,x1,x2,x3,type);
-  struct matrix *  y_coef=generate_curve_coefs(y0,y1,y2,y3,type);
+
   
-  int t=0;
+  struct matrix *  y_coef=generate_curve_coefs(y0,y1,y2,y3,type);
+  printf("x coef\n");
+  print_matrix(x_coef);
+  printf("y coef\n");
+  print_matrix(y_coef);
+  
+  double t=0;
   step*=1000;
   //set cx0, cy0
-  int cx0,cy0,cx1,cy1;//curve-x, curve-y
+  double cx0,cy0,cx1,cy1;//curve-x, curve-y
 
   cx0=x0;
   cy0=y0;
   
   while (t<=1000) {
     t+=step;
-    cx1=(x_coef->m[0][0])*pow(t,3)+(x_coef->m[1][0])*pow(t,2)+(x_coef->m[2][0])*t+x_coef->m[3][0];
-    cy1=(y_coef->m[0][0])*pow(t,3)+(y_coef->m[1][0])*pow(t,2)+(y_coef->m[2][0])*t+y_coef->m[3][0];
+    cx1=(x_coef->m[0][0])*pow(t/1000,3)+(x_coef->m[1][0])*pow(t/1000,2)+(x_coef->m[2][0])*(t/1000)+x_coef->m[3][0];
+    cy1=(y_coef->m[0][0])*pow(t/1000,3)+(y_coef->m[1][0])*pow(t/1000,2)+(y_coef->m[2][0])*(t/1000)+y_coef->m[3][0];
     add_edge(points,cx0,cy0,0,cx1,cy1,0);
     cx0=cx1;
     cy0=cy1;
   }    
-  
+  free_matrix(x_coef);
+  free_matrix(y_coef);
 }
 
 
