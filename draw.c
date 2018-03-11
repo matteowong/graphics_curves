@@ -30,7 +30,7 @@ void add_circle( struct matrix * points,
     x1=r*cos(t/1000*2*M_PI)+cx;
     y1=r*sin(t/1000*2*M_PI)+cy;
 
-    printf("circle: x0: %lf y0: %lf x1: %lf y1: %lf\n",x0,y0,x1,y1);
+    //printf("circle: x0: %lf y0: %lf x1: %lf y1: %lf\n",x0,y0,x1,y1);
 
     add_edge(points,x0,y0,0,x1,y1,0);
     x0=x1;
@@ -68,10 +68,10 @@ void add_curve( struct matrix *points,
 
   
   struct matrix *  y_coef=generate_curve_coefs(y0,y1,y2,y3,type);
-  printf("x coef\n");
-  print_matrix(x_coef);
-  printf("y coef\n");
-  print_matrix(y_coef);
+  //printf("x coef\n");
+  //print_matrix(x_coef);
+  //printf("y coef\n");
+  //print_matrix(y_coef);
   
   double t=0;
   step*=1000;

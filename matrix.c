@@ -34,8 +34,8 @@ struct matrix * make_bezier() {
   ret->m[3][2]=0;
   ret->m[3][3]=0;
 
-  printf("bezier\n");
-  print_matrix(ret);
+  //printf("bezier\n");
+  //print_matrix(ret);
   return ret;
 }
 
@@ -100,8 +100,8 @@ struct matrix * generate_curve_coefs( double p1, double p2,
   ret->m[1][0]=p2;
   ret->m[2][0]=p3;
   ret->m[3][0]=p4;
-  printf("pre gen coefs\n");
-  print_matrix(ret);
+  //printf("pre gen coefs\n");
+  //print_matrix(ret);
   if (type==HERMITE) {
     //printf("generate coef hermite\n");
     generate=make_hermite();
